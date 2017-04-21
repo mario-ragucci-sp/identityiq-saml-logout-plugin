@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin name="saml-logout-plugin" displayName="SAML Logout Plugin" version="0.2" disabled="false" certificationLevel="None" minSystemVersion="7.1" maxSystemVersion="7.1">
+  <Attributes>
+    <Map>     
+      <entry key="minUpgradableVersion" value="0.1"/>     
+      <entry key="settings">
+        <value>
+          <List>
+            <Setting name="redirectUrl" dataType="string" defaultValue="pleaseRedirectMeToYourIdpLogoutPage" helpText="Define the URL to which we should redirect on logout" label="Redirect URL"/>
+          </List>
+        </value>
+      </entry>     
+      <entry key="snippets">
+        <value>
+          <List>
+            <Snippet regexPattern=".*">
+              <Scripts>
+                <String>ui/js/headerInject.js</String>
+              </Scripts>
+            </Snippet>
+          </List>
+        </value>
+      </entry>      
+      <entry key="restResources">
+        <value>
+          <List>
+            <String>sailpoint.services.plugin.rest.SamlLogoutService</String>
+          </List>
+        </value>
+      </entry>
+    </Map>
+  </Attributes>
+</Plugin>
