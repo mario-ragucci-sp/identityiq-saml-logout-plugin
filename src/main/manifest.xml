@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<Plugin name="saml-logout-plugin" displayName="SAML Logout Plugin" version="0.2" disabled="false" certificationLevel="None" minSystemVersion="7.1" maxSystemVersion="7.1">
+<Plugin name="saml-logout-plugin" displayName="SAML Logout Plugin" version="0.4" disabled="false" certificationLevel="None" minSystemVersion="7.1" maxSystemVersion="7.1">
   <Attributes>
     <Map>     
       <entry key="minUpgradableVersion" value="0.1"/>     
@@ -8,6 +8,7 @@
         <value>
           <List>
             <Setting name="redirectUrl" dataType="string" defaultValue="pleaseRedirectMeToYourIdpLogoutPage" helpText="Define the URL to which we should redirect on logout" label="Redirect URL"/>
+          	<Setting name="signRedirect" dataType="boolean" defaultValue="false" helpText="This signs the request. ATTENTION: This only works with the appropriate SAML enhancement!" label="Sign Request"/>
           </List>
         </value>
       </entry>     
