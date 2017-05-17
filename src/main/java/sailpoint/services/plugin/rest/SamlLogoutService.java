@@ -31,6 +31,7 @@ import sailpoint.web.sso.SAMLUtil;
 @AllowAll
 public class SamlLogoutService extends BasePluginResource {
 	public static final String SQL_SESSION_QUERY = "SELECT SESSION_INDEX FROM SAML_SESSIONS WHERE ACCOUNT=? AND CSRF_TOKEN=?";
+	public static final String SQL_REMOVE_DATA	 = "DELETE FROM SAML_SESSIONS WHERE ACCOUNT=? AND CSRF_TOKEN=?";
 	public static final Logger _logger = Logger.getLogger(SamlLogoutService.class);
 	
 	protected boolean isSamlEnabled	= false;
@@ -68,7 +69,7 @@ public class SamlLogoutService extends BasePluginResource {
 			String csrfToken			= null;
 			SAMLObject logoutRequest 	= null;
 			
-			try {			
+			try {	
 				principal = getLoggedInUserName();
 				csrfToken = getCsrfToken();
 				sessionIndex = returnSessionIndexFromDb(principal, csrfToken);
@@ -94,11 +95,12 @@ public class SamlLogoutService extends BasePluginResource {
 					}else {
 						// Build reqular logout URL
 						redirectUrl = SAMLUtil.buildLogoutUrl(redirectUrl, logoutRequest);
-					}				
+					}
+					// Remove entry from db
+					removeEntryFromDb(principal, csrfToken);
 				} else {
 					throw new GeneralException("no SAMLConfig could be retrieved from the database. Please review your SAML configuration");
 				}
-				
 			} catch (GeneralException e) {
 				_logger.error(e.getMessage(), e);
 			} catch (SQLException e) {
@@ -108,7 +110,7 @@ public class SamlLogoutService extends BasePluginResource {
 			}
 		}
 		
-		// Invalidat session and return URL
+		// Invalidate session and return URL
 		getSession().invalidate();
 		
 		if(_logger.isDebugEnabled()) {
@@ -118,7 +120,13 @@ public class SamlLogoutService extends BasePluginResource {
 	}
 	
 	private String getCsrfToken() {
+		if(_logger.isDebugEnabled()) {
+			_logger.debug(String.format("ENTERING method %s()", "getCsrfToken"));
+		}
 		String csrfToken = (String) getSession().getAttribute("csrfToken");
+		if(_logger.isDebugEnabled()) {
+			_logger.debug(String.format("LEAVING method %s (returns: %s)", "getCsrfToken", csrfToken));
+		}
 		return csrfToken;
 	}
 
@@ -196,10 +204,31 @@ public class SamlLogoutService extends BasePluginResource {
 		
 		rs.close();
 		prepStatement.close();
+		connection.close();
 		
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("LEAVING method %s (returns: %s)", "returnSessionIndexFromDb", result));
 		}
 		return result;
+	}
+	
+	private void removeEntryFromDb(String principal, String csrfToken) throws GeneralException, SQLException {
+		if(_logger.isDebugEnabled()) {
+			_logger.debug(String.format("ENTERING method %s(principal = %s, csrfToken)", "removeEntryFromDb", principal, csrfToken));
+		}
+		Connection connection = getConnection();
+		PreparedStatement prepStatement = connection.prepareStatement(SQL_REMOVE_DATA);
+		
+		prepStatement.setString(1, principal);
+		prepStatement.setString(2, csrfToken);
+		
+		prepStatement.execute();
+
+		prepStatement.close();
+		connection.close();
+		
+		if(_logger.isDebugEnabled()) {
+			_logger.debug(String.format("LEAVING method %s (returns: %s)", "removeEntryFromDb", "void"));
+		}
 	}
 }
