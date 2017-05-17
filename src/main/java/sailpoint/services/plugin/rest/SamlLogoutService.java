@@ -30,7 +30,7 @@ import sailpoint.web.sso.SAMLUtil;
 @Produces(MediaType.TEXT_PLAIN)
 @AllowAll
 public class SamlLogoutService extends BasePluginResource {
-	public static final String SQL_SESSION_QUERY = "SELECT SESSION_INDEX FROM SAML_SESSIONS WHERE ACCOUNT=?";
+	public static final String SQL_SESSION_QUERY = "SELECT SESSION_INDEX FROM SAML_SESSIONS WHERE ACCOUNT=? AND CSRF_TOKEN=?";
 	public static final Logger _logger = Logger.getLogger(SamlLogoutService.class);
 	
 	protected boolean isSamlEnabled	= false;
@@ -65,11 +65,13 @@ public class SamlLogoutService extends BasePluginResource {
 		if(createLogoutRequest) {
 			String sessionIndex 	 	= null;
 			String principal 		 	= null;
+			String csrfToken			= null;
 			SAMLObject logoutRequest 	= null;
 			
 			try {			
 				principal = getLoggedInUserName();
-				sessionIndex = returnSessionIndexFromDb(principal);
+				csrfToken = getCsrfToken();
+				sessionIndex = returnSessionIndexFromDb(principal, csrfToken);
 				SAMLConfig samlConfig = getSamlConfig();
 				
 				if(samlConfig != null) {
@@ -115,6 +117,11 @@ public class SamlLogoutService extends BasePluginResource {
 		return redirectUrl;
 	}
 	
+	private String getCsrfToken() {
+		String csrfToken = (String) getSession().getAttribute("csrfToken");
+		return csrfToken;
+	}
+
 	private boolean validateKeystoreInformation() {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s()", "validateKeystoreInformation"));
@@ -171,15 +178,16 @@ public class SamlLogoutService extends BasePluginResource {
 		return config;
 	}
 	
-	private String returnSessionIndexFromDb(String principal) throws GeneralException, SQLException {
+	private String returnSessionIndexFromDb(String principal, String csrfToken) throws GeneralException, SQLException {
 		if(_logger.isDebugEnabled()) {
-			_logger.debug(String.format("ENTERING method %s(principal = %s)", "returnSessionIndexFromDb", principal));
+			_logger.debug(String.format("ENTERING method %s(principal = %s, csrfToken)", "returnSessionIndexFromDb", principal, csrfToken));
 		}
 		String result = null;
 		Connection connection = getConnection();
 		PreparedStatement prepStatement = connection.prepareStatement(SQL_SESSION_QUERY);
 		
 		prepStatement.setString(1, principal);
+		prepStatement.setString(2, csrfToken);
 		
 		ResultSet rs = prepStatement.executeQuery();
 		if(rs.next()) {
