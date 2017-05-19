@@ -119,6 +119,10 @@ public class SamlLogoutService extends BasePluginResource {
 		return redirectUrl;
 	}
 	
+	/**
+	 * Returns the csrf token of the session
+	 * @return
+	 */
 	private String getCsrfToken() {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s()", "getCsrfToken"));
@@ -130,6 +134,9 @@ public class SamlLogoutService extends BasePluginResource {
 		return csrfToken;
 	}
 
+	/**
+	 * @return
+	 */
 	private boolean validateKeystoreInformation() {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s()", "validateKeystoreInformation"));
@@ -151,6 +158,9 @@ public class SamlLogoutService extends BasePluginResource {
 		return result;
 	}
 	
+	/**
+	 * @throws GeneralException
+	 */
 	private void setKeystoreInformation() throws GeneralException {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s()", "setKeystoreInformation"));
@@ -170,6 +180,11 @@ public class SamlLogoutService extends BasePluginResource {
 		}
 	}
 	
+	/**
+	 * Returns the IdentityIQ SAML Configuration object
+	 * @return the SAMLConfig object
+	 * @throws GeneralException
+	 */
 	private SAMLConfig getSamlConfig() throws GeneralException {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s()", "getSamlConfig"));
@@ -186,6 +201,14 @@ public class SamlLogoutService extends BasePluginResource {
 		return config;
 	}
 	
+	/**
+	 * returns a session index from the database
+	 * @param principal the name of the logged-in account
+	 * @param csrfToken the csrf token associated to the session
+	 * @return
+	 * @throws GeneralException
+	 * @throws SQLException
+	 */
 	private String returnSessionIndexFromDb(String principal, String csrfToken) throws GeneralException, SQLException {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s(principal = %s, csrfToken)", "returnSessionIndexFromDb", principal, csrfToken));
@@ -212,6 +235,13 @@ public class SamlLogoutService extends BasePluginResource {
 		return result;
 	}
 	
+	/**
+	 * removes a session index from the database
+	 * @param principal the name of the logged-in account
+	 * @param csrfToken the csrf token associated to the session
+	 * @throws GeneralException
+	 * @throws SQLException
+	 */
 	private void removeEntryFromDb(String principal, String csrfToken) throws GeneralException, SQLException {
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("ENTERING method %s(principal = %s, csrfToken)", "removeEntryFromDb", principal, csrfToken));
