@@ -10,11 +10,6 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>de.whisperedshouts</groupId>
-			<artifactId>SAMLAuthSigner</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>sailpoint.library</groupId>
 			<artifactId>identityiq</artifactId>
 			<version>7.1</version>
@@ -73,6 +68,16 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.whisperedshouts</groupId>
+			<artifactId>saml-utilities</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.whisperedshouts</groupId>
+			<artifactId>keymanager-utilities</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 	<build>
