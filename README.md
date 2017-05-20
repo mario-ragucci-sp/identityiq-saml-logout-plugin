@@ -28,6 +28,7 @@ The Information is stored in the database.
 ### Configuration of the SamlSessionIndexFilter
 The session index is only available in the authN response of the IdP. Therefore, we need to create a ServletFilter that will intercept the authN response and store it - among other information - in a database.
 The web.xml must be updated to contain the following definition. This will be the configuration for our SamlIndexSessionFilter.
+
 ```
 <?xml version="1.0" encoding="utf-8"?>  
 <filter>  
