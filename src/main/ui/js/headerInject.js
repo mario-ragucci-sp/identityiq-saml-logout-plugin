@@ -11,11 +11,11 @@ function doSamlLogout(url) {
 
 jQuery(document).ready(function() {    
     // URL where we will find our RESTful logout service    
-    var url = SailPoint.CONTEXT_PATH + '/plugin/rest/saml-logout/doLogout';
+    var samlLogoutUrl = SailPoint.CONTEXT_PATH + '/plugin/rest/saml-logout/doLogout';
 
     // 'Magic Code' to have a logout button appear
     jQuery("ul.navbar-right li:last").after(
-    '<li role="presentation"><a href="#" id="samlLogoutLink" role="menuitem" tabindex="0" onclick="doSamlLogout(\''+url+'\');">' +
+    '<li role="presentation"><a href="#" id="samlLogoutLink" role="menuitem" tabindex="0" onclick="doSamlLogout(\''+samlLogoutUrl+'\');">' +
     '<i class="fa fa-sign-out m-r-xs" role="presentation" aria-hidden="true"></i>SAML-Logout</a>'+
     '</li>');    
 
