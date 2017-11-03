@@ -22,8 +22,8 @@ import sailpoint.object.SAMLConfig;
 import sailpoint.rest.plugin.AllowAll;
 import sailpoint.rest.plugin.BasePluginResource;
 import sailpoint.services.saml.ServicesSAMLConstant;
+import sailpoint.services.util.SAMLUtil;
 import sailpoint.tools.GeneralException;
-import sailpoint.web.sso.SAMLUtil;
 
 @Path("saml-logout")
 @Consumes(MediaType.APPLICATION_JSON)
