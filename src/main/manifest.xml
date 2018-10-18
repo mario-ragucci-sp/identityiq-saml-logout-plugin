@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<Plugin name="saml-logout-plugin" displayName="SAML Logout Plugin" version="0.6" disabled="false" certificationLevel="None" minSystemVersion="7.1" maxSystemVersion="7.2">
+<Plugin name="saml_logout_plugin" displayName="SAML Logout Plugin" version="0.7" disabled="false" certificationLevel="None" minSystemVersion="7.1" maxSystemVersion="7.3">
   <Attributes>
     <Map>     
-      <entry key="minUpgradableVersion" value="0.1"/>     
+      <entry key="minUpgradableVersion" value="0.7"/>     
       <entry key="settings">
         <value>
           <List>

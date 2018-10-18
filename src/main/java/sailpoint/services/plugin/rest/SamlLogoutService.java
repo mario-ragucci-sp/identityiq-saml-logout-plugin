@@ -39,12 +39,12 @@ public class SamlLogoutService extends BasePluginResource {
 
     protected String jksLocation	= null;
     protected String jksPassword	= null;
-    protected String jksAlias		= null;
-    protected String storeType		= "JKS";
+    protected String jksAlias		  = null;
+    protected String storeType    = "JKS";
     
 	@Override
 	public String getPluginName() {
-		return "saml-logout-plugin";
+		return "saml_logout_plugin";
 	}
 
 	@GET
@@ -54,9 +54,9 @@ public class SamlLogoutService extends BasePluginResource {
 			_logger.debug(String.format("ENTERING method %s()", "doLogout"));
 		}
 		
-		boolean signRequest 	 	= getSettingBool("signRedirect");
+		boolean signRequest 	 	    = getSettingBool("signRedirect");
 		boolean createLogoutRequest	= getSettingBool("createLogoutRequest");
-		String redirectUrl 		 	= getSettingString("redirectUrl");		
+		String redirectUrl 		 	    = getSettingString("redirectUrl");		
 		
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("redirectURL: %s, createLogoutRequest: %s, signRequest: %s",
@@ -64,9 +64,9 @@ public class SamlLogoutService extends BasePluginResource {
 		}
 		
 		if(createLogoutRequest) {
-			String sessionIndex 	 	= null;
-			String principal 		 	= null;
-			String csrfToken			= null;
+			String sessionIndex 	 	  = null;
+			String principal 		 	    = null;
+			String csrfToken			    = null;
 			SAMLObject logoutRequest 	= null;
 			
 			try {	
@@ -147,9 +147,9 @@ public class SamlLogoutService extends BasePluginResource {
 					jksLocation, jksAlias, jksPassword, storeType));
 		}
 		result = (jksLocation != null && !jksLocation.isEmpty()) ? true : false;
-		result = (jksAlias != null && !jksAlias.isEmpty()) ? true : false;
+		result = (jksAlias    != null && !jksAlias.isEmpty())    ? true : false;
 		result = (jksPassword != null && !jksPassword.isEmpty()) ? true : false;
-		result = (storeType != null && !storeType.isEmpty()) ? true : false;
+		result = (storeType   != null && !storeType.isEmpty())   ? true : false;
 		
 		if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("LEAVING method %s (returns: %s)", "validateKeystoreInformation", result));
@@ -168,12 +168,12 @@ public class SamlLogoutService extends BasePluginResource {
 		Configuration sysConfig;
 		sysConfig		= getContext().getConfiguration();
         isSamlEnabled 	= sysConfig.getBoolean(Configuration.SAML_ENABLED, false);
-        signAuthN		= sysConfig.getBoolean(ServicesSAMLConstant.CONFIG_SIGN_AUTHN, false);
-        jksLocation		= sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_CERT);
-        jksAlias		= sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_CERT_ALIAS);
-        jksPassword		= sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_STORE_PASS);
-        String strType	= sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_STORE_TYPE);        
-        storeType = (strType != null && !strType.isEmpty())? strType : storeType;
+        signAuthN		    = sysConfig.getBoolean(ServicesSAMLConstant.CONFIG_SIGN_AUTHN, false);
+        jksLocation		  = sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_CERT);
+        jksAlias		    = sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_CERT_ALIAS);
+        jksPassword		  = sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_STORE_PASS);
+        String strType  = sysConfig.getString(ServicesSAMLConstant.CONFIG_SP_STORE_TYPE);        
+        storeType       = (strType != null && !strType.isEmpty())? strType : storeType;
         
         if(_logger.isDebugEnabled()) {
 			_logger.debug(String.format("LEAVING method %s (returns: %s)", "setKeystoreInformation", "void"));
